@@ -1,0 +1,30 @@
+# Archivos de variables de entorno y secretos (CRÍTICO)
+.env
+.env.*
+*.pem
+
+# Entornos virtuales de Python
+venv/
+env/
+ENV/
+.venv/
+
+# Archivos de caché de Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Archivos de configuración de IDEs y editores
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+
+# Scripts de diagnóstico locales (opcional)
+check_status.py
+register_webhook.py

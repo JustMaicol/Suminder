@@ -1,0 +1,26 @@
+# Web Framework y Server
+fastapi==0.139.2
+uvicorn==0.51.0
+
+# Cliente de base de datos
+supabase==2.31.0
+
+# Cliente de IA     
+google-genai==2.14.0
+
+# Peticiones http asincronas
+httpx==0.28.1   
+
+# Gestion de variables de entorno y validacion
+python-telegram-bot==22.8
+
+python-dotenv==1.2.2
+pydantic==2.13.4
+
+python-dateutil==2.9.0.post0
+
+tzdata==2026.1
+
+
+python-telegram-bot
+python-telegram-bot
