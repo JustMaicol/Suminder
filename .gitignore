@@ -25,6 +25,5 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Scripts de diagnóstico locales (opcional)
 check_status.py
 register_webhook.py
