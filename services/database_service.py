@@ -86,6 +86,7 @@ TIMEZONE = ZoneInfo("America/Managua")
 
 
 async def get_materia_now():
+    """Devuelve (materia_id, nombre_materia) de la clase en curso, o (None, None) si no hay ninguna."""
     now = datetime.now(TIMEZONE)
     dia_semana_num = now.weekday() + 1  # 1=Lunes .. 7=Domingo
     hora_actual_str = now.strftime("%H:%M:%S")
@@ -93,15 +94,17 @@ async def get_materia_now():
     try:
         response = (
             supabase.table("horarios")
-            .select("materia_id, hora_inicio, hora_fin")
+            .select("materia_id, materias(nombre)")
             .eq("dia_semana", dia_semana_num)
             .lte("hora_inicio", hora_actual_str)
             .gte("hora_fin", hora_actual_str)
             .execute()
         )
         if response.data and len(response.data) > 0:
-            return response.data[0].get("materia_id")
+            item = response.data[0]
+            materia_info = item.get("materias") or {}
+            return item.get("materia_id"), materia_info.get("nombre")
     except Exception as e:
         print(f"Error al verificar materia activa: {e}")
 
-    return None
+    return None, None

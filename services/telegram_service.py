@@ -9,7 +9,7 @@ from telegram.ext import (
 )
 
 from config import TELEGRAM_BOT_TOKEN, MI_TELEGRAM_ID
-from services.ai_service import resumen
+from services.ai_service import resumen, NOT_RELATED
 from services.database_service import (
     get_materias_all,
     get_materia_aprox,
@@ -133,7 +133,9 @@ async def note_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
     texto = update.message.text.strip()
     print(f"\n[Telegram Long Polling] Apunte recibido: '{texto[:40]}...'")
 
-    resumen_ia = await resumen(texto)
+    materia_id, materia_nombre = await get_materia_now()
+
+    resumen_ia = await resumen(texto, materia_nombre)
     if not resumen_ia:
         await update.message.reply_text(
             "⚠️ *No se pudo generar el resumen.* Ocurrió un problema con la IA, por lo que la nota no ha sido guardada.",
@@ -141,7 +143,14 @@ async def note_message_handler(update: Update, context: ContextTypes.DEFAULT_TYP
         )
         return
 
-    materia_id = await get_materia_now()
+    if resumen_ia == NOT_RELATED:
+        await update.message.reply_text(
+            f"🤔 *Ese mensaje no parece tener relación con la clase actual ({materia_nombre}).*\n\n"
+            f"No lo guardé como apunte. Si es una nota aparte, escríbela fuera del horario de clase.",
+            parse_mode="Markdown",
+        )
+        return
+
     await save_note(materia_id, texto, resumen_ia)
 
     if materia_id:
